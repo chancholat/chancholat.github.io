@@ -38,14 +38,63 @@
     <img src="icon2.avif" id="icon2" draggable="true" ondragstart="drag(event)">
 
     <script>
-        function generateCalendar() {
+        const GITHUB_USERNAME = "chancholat"; // Thay bằng GitHub username của bạn
+        const REPO_NAME = "chancholat.github.io"; // Thay bằng repo bạn lưu dữ liệu
+        const FILE_PATH = "calendar.json";
+        const TOKEN = "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"; // Thay bằng Personal Access Token
+        function fetchCalendarState() {
+            console.log("Fetching calendar state from GitHub...");
+            fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: { "Authorization": `token ${TOKEN}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                let content = atob(data.content);
+                let state = JSON.parse(content);
+                console.log("Fetched state:", state);
+                generateCalendar(state);
+            })
+            .catch(error => {
+                console.error("Lỗi khi tải trạng thái lịch:", error);
+                generateCalendar({});
+            });
+        }
+
+        function saveState() {
+            let state = {};
+            document.querySelectorAll(".drop-zone").forEach((zone, index) => {
+                state[index + 1] = zone.innerHTML;
+            });
+            let encodedContent = btoa(JSON.stringify(state, null, 2));
+            
+            console.log("Saving state to GitHub:", state);
+            fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `token ${TOKEN}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: "Cập nhật trạng thái lịch",
+                    content: encodedContent,
+                    sha: localStorage.getItem("file_sha")
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Save successful:", data);
+                localStorage.setItem("file_sha", data.content.sha);
+            })
+            .catch(err => console.error("Lỗi khi lưu trạng thái:", err));
+        }
+
+        function generateCalendar(savedState) {
             let table = document.getElementById("calendar");
             let today = new Date();
             let year = today.getFullYear();
             let month = today.getMonth();
             let firstDay = new Date(year, month, 1).getDay();
             let daysInMonth = new Date(year, month + 1, 0).getDate();
-            let savedState = JSON.parse(localStorage.getItem("calendarState")) || {};
             
             let row = document.createElement("tr");
             for (let i = 0; i < firstDay; i++) {
@@ -92,18 +141,11 @@
             icon.draggable = false;
             event.target.appendChild(icon);
             
+            console.log(`Dropped ${iconId} into day ${day}`);
             saveState();
         }
 
-        function saveState() {
-            let state = {};
-            document.querySelectorAll(".drop-zone").forEach((zone, index) => {
-                state[index + 1] = zone.innerHTML;
-            });
-            localStorage.setItem("calendarState", JSON.stringify(state));
-        }
-
-        window.onload = generateCalendar;
+        window.onload = fetchCalendarState;
     </script>
 </body>
 </html>
