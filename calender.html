@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Công Việc</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            width: 14%;
+            height: 80px;
+            border: 1px solid #ccc;
+            text-align: center;
+            vertical-align: middle;
+            position: relative;
+        }
+        img {
+            width: 50px;
+            cursor: grab;
+        }
+        .drop-zone {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Lịch Tháng</h2>
+    <table id="calendar"></table>
+    <h3>Kéo thả icon để đánh dấu</h3>
+    <img src="icon1.png" id="icon1" draggable="true" ondragstart="drag(event)">
+    <img src="icon2.avif" id="icon2" draggable="true" ondragstart="drag(event)">
+
+    <script>
+        function generateCalendar() {
+            let table = document.getElementById("calendar");
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = today.getMonth();
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+            let savedState = JSON.parse(localStorage.getItem("calendarState")) || {};
+            
+            let row = document.createElement("tr");
+            for (let i = 0; i < firstDay; i++) {
+                row.appendChild(document.createElement("td"));
+            }
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                let cell = document.createElement("td");
+                cell.innerHTML = day;
+                let dropZone = document.createElement("div");
+                dropZone.classList.add("drop-zone");
+                dropZone.setAttribute("ondragover", "allowDrop(event)");
+                dropZone.setAttribute("ondrop", "drop(event, " + day + ")");
+                
+                if (savedState[day]) {
+                    dropZone.innerHTML = savedState[day];
+                }
+                
+                cell.appendChild(dropZone);
+                row.appendChild(cell);
+                
+                if ((firstDay + day) % 7 === 0) {
+                    table.appendChild(row);
+                    row = document.createElement("tr");
+                }
+            }
+            
+            table.appendChild(row);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("id", event.target.id);
+        }
+
+        function drop(event, day) {
+            event.preventDefault();
+            let iconId = event.dataTransfer.getData("id");
+            let icon = document.getElementById(iconId).cloneNode(true);
+            icon.removeAttribute("id");
+            icon.draggable = false;
+            event.target.appendChild(icon);
+            
+            saveState();
+        }
+
+        function saveState() {
+            let state = {};
+            document.querySelectorAll(".drop-zone").forEach((zone, index) => {
+                state[index + 1] = zone.innerHTML;
+            });
+            localStorage.setItem("calendarState", JSON.stringify(state));
+        }
+
+        window.onload = generateCalendar;
+    </script>
+</body>
+</html>
