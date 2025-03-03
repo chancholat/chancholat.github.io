@@ -6,7 +6,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <title>Snoopy X Miffy 75</title>
     <style>
-        
+      body {
+        font-family: Arial, sans-serif;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -19,6 +22,11 @@
         vertical-align: top;
         position: relative;
       }
+
+      .bg-hover {
+        background-color: #f0f0f0;
+      }
+
       img {
         width: 50px;
         cursor: grab;
@@ -30,31 +38,98 @@
         top: 10 px;
         left: 0;
       }
+
+      .center-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      .center-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .h2 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 10px;
+      }
+
+      .h3 {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 5px;
+      }
+
+      .h4 {
+        text-align: center;
+        font-size: 16px;
+        margin: 5px;
+      }
+
+      button {
+        border: none !important;
+        padding: 6px 22px;
+        border-radius: 16px;
+      }
+
+      button:hover {
+        background-color: #cddfec !important;
+      }
+
+      .calendar-header {
+        display: flex;
+        height: 40px;
+        width: 300px;
+        justify-content: space-between;
+        justify-items: center;
+        align-items: center;
+        margin: 10px;
+      }
+
+      .display-icon img {
+        height: 100px;
+        width: auto;
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
-    <h2>Lịch Học Ielts của Snoopy và Miffy</h2>
-    <h3>Kéo thả icon để đánh dấu</h3>
-    <img
-      src="icon1_1.png"
-      id="icon1"
-      draggable="true"
-      ondragstart="drag(event)"
+    <div class="center-row">
+      <div class="center-col">
+        <p class="h2">Lịch học IELTS của Snoopy và Miffy 🫵</p>
+        <p class="h4">Kéo thả icon để đánh dấu 🔥</p>
+      </div>
+    </div>
 
+    <div class="center-row display-icon">
+      <img
+        src="icon1_1.png"
+        id="icon1"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
 
-    />
-    <img
-      src="icon2.png"
-      id="icon2"
-      draggable="true"
-      ondragstart="drag(event)"
+      <img
+        src="icon2.png"
+        id="icon2"
+        draggable="true"
+        ondragstart="drag(event)"
+      />
+    </div>
 
-    />
-
-    <div class="calendar-header " style="display: flex; height: 40px; width: 300px; justify-content: space-between; justify-items: center; align-items: center;">
-      <button onclick="changeMonth(-1)">◀ Previous</button>
-      <h2 id="calendarTitle"></h2>
-      <button onclick="changeMonth(1)">Next ▶</button>
+    <div class="center-row">
+      <div class="calendar-header">
+        <button onclick="changeMonth(-1)">◀</button>
+        <p class="h3" id="calendarTitle"></p>
+        <button onclick="changeMonth(1)">▶</button>
+      </div>
     </div>
 
     <table id="calendar">
@@ -75,10 +150,10 @@
       const FILE_PATH = "calendar.json";
       const SICRIT =
         "U2FsdGVkX1/ilvRaMgDIEV3l+yYomsd2G0OuzfU+7uwCcTe0kao97cnyI/cVTYdraXZpVmMCus+ZS7yrpQR2MFRg2GDzJICSr6LWD6iIx8vNHxcY2Kxv8JvcAq9QftB2dv003YUPdxhlYOprBZC4yQ=="; // Thay bằng Personal Access decrypted
-      
-    const bytes = CryptoJS.AES.decrypt(SICRIT, "ielts75");
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    const COMMITTER = { name: "chan", email: "thepdatoipm@gmail.com" };
+
+      const bytes = CryptoJS.AES.decrypt(SICRIT, "ielts75");
+      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+      const COMMITTER = { name: "chan", email: "thepdatoipm@gmail.com" };
 
       let saveStated = {};
       let fileSha = null;
@@ -225,17 +300,37 @@
         for (let day = 1; day <= daysInMonth; day++) {
           let cell = document.createElement("td");
           cell.innerHTML = day;
+          // cell.addEventListener("dragenter", () => {
+          //   cell.classList.add("bg-hover");
+          // });
+          // cell.addEventListener("dragleave", () => {
+          //   cell.classList.remove("bg-hover");
+          // });
           let dropZone = document.createElement("div");
           dropZone.classList.add("drop-zone");
           dropZone.classList.add("flex");
           dropZone.setAttribute("ondragover", "allowDrop(event)");
           dropZone.setAttribute("ondrop", `drop(event, ${day}, '${fileSha}')`);
+          dropZone.addEventListener("dragenter", () => {
+            dropZone.parentElement.classList.add("bg-hover");
+          });
 
           if (savedState[currentYear]?.[currentMonth]?.[day]) {
             dropZone.innerHTML = savedState[currentYear]?.[currentMonth]?.[day];
+            dropZone.children[0].addEventListener("dragenter", () => {
+              console.log("drag enter");
+              dropZone.parentElement.classList.add("bg-hover");
+            });
+            dropZone.children[0].addEventListener("dragleave", () => {
+              dropZone.parentElement.classList.remove("bg-hover");
+            });
+          } else {
+            dropZone.addEventListener("dragleave", () => {
+              dropZone.parentElement.classList.remove("bg-hover");
+            });
           }
 
-            // dropZone.innerHTML = "<img src=\"icon1.png\"id=\"icon1\"> <img src=\"icon1.png\"id=\"icon1\">";
+          // dropZone.innerHTML = "<img src=\"icon1.png\"id=\"icon1\"> <img src=\"icon1.png\"id=\"icon1\">";
 
           if (
             year === new Date().getFullYear() &&
@@ -283,35 +378,23 @@
         let icon = document.getElementById(iconId).cloneNode(true);
         icon.removeAttribute("id");
         icon.draggable = false;
-        
+
         // check if any icon already exists
         // check if class of envent target tag is img
 
-
-
         if (!event.target.classList.contains("drop-zone")) {
-            console.log("Event target is not drop-zone");
-            div = event.target.parentElement;
-            // check if there are two icons already
-            if (div.children.length > 1) {
-                console.log("There are already two icons");
-                return;
-            }
-            div.appendChild(icon);
-            console.log(`Dropped ${iconId} into day ${day}`);
-            saveState(fileSha, currentYear, currentMonth);
+          console.log("Event target is not drop-zone");
+          event.target = event.target.parentElement;
         }
-        else {
-            // check if there are two icons already
-            if (event.target.children.length > 1) {
-                console.log("There are already two icons");
-                return;
-            }
-            event.target.appendChild(icon);
-            console.log(`Dropped ${iconId} into day ${day}`);
-            saveState(fileSha, currentYear, currentMonth);
+        // check if there are two icons already
+        if (event.target.children.length > 1) {
+          console.log("There are already two icons");
+          return;
         }
-
+        event.target.appendChild(icon);
+        event.target.parentElement.classList.remove("bg-hover");
+        console.log(`Dropped ${iconId} into day ${day}`);
+        saveState(fileSha, currentYear, currentMonth);
       }
 
       window.onload = fetchCalendarState;
