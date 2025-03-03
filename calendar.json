@@ -12,7 +12,7 @@
       "9": "",
       "10": "",
       "11": "",
-      "12": "",
+      "12": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "13": "",
       "14": "",
       "15": "<img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
