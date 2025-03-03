@@ -5,7 +5,7 @@
       "2": "",
       "3": "",
       "4": "",
-      "5": "",
+      "5": "<img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "6": "",
       "7": "<img src=\"icon1_1.png\" class=\"display-icon\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "8": "",
