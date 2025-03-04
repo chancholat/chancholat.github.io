@@ -3,7 +3,7 @@
     "2": {
       "1": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "2": "",
-      "3": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
+      "3": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "4": "",
       "5": "",
       "6": "",
