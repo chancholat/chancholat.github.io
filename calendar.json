@@ -8,7 +8,7 @@
       "5": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "6": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "7": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
-      "8": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
+      "8": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "9": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "10": "<img src=\"icon1_1.png\" draggable=\"false\" ondragstart=\"drag(event)\"><img src=\"icon2.png\" draggable=\"false\" ondragstart=\"drag(event)\">",
       "11": "",
