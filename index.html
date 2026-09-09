@@ -1,403 +1,234 @@
 <!DOCTYPE html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <title>Snoopy X Miffy 75</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hai-Chan Nguyen — Researcher</title>
+<meta name="description" content="Bio and publications of Hai-Chan Nguyen, Information Technology researcher.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+<style>
+  :root{
+    --bg:#f7f7f5;
+    --surface:#ffffff;
+    --text:#1c1c1a;
+    --text-muted:#5c5c57;
+    --accent:#a6ce39; /* ORCID green */
+    --accent-dark:#7fa832;
+    --border:#e5e5e0;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+    --max-w:760px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15161a;
+      --surface:#1d1f24;
+      --text:#f0f0ec;
+      --text-muted:#a3a39c;
+      --border:#2c2e34;
+      --shadow:0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.25);
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding:64px 24px 96px;
+  }
+  header.hero{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:40px;
+  }
+  .avatar{
+    width:76px;height:76px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;align-items:center;justify-content:center;
+    color:#1c1c1a;font-weight:700;font-size:28px;
+    flex-shrink:0;
+    box-shadow:var(--shadow);
+  }
+  h1{font-size:1.75rem;margin:0 0 4px;letter-spacing:-0.01em;}
+  .role{color:var(--text-muted);font-size:1rem;margin:0;}
+  .orcid-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:8px;
+    font-size:0.85rem;
+    color:var(--text-muted);
+    text-decoration:none;
+    border:1px solid var(--border);
+    padding:4px 10px;
+    border-radius:999px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .orcid-badge:hover{border-color:var(--accent);color:var(--text);}
+  .orcid-badge svg{width:16px;height:16px;flex-shrink:0;}
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      td {
-        width: 14%;
-        height: 80px;
-        border: 1px solid #ccc;
-        text-align: center;
-        vertical-align: top;
-        position: relative;
-      }
+  section{margin-bottom:40px;}
+  h2{
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--text-muted);
+    margin:0 0 16px;
+    font-weight:600;
+  }
 
-      .bg-hover {
-        background-color: #f0f0f0;
-      }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    box-shadow:var(--shadow);
+  }
 
-      img {
-        width: 50px;
-        cursor: grab;
-      }
-      .drop-zone {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 10 px;
-        left: 0;
-      }
+  .edu-item h3{margin:0 0 2px;font-size:1.05rem;}
+  .edu-item .org{color:var(--text-muted);font-size:0.92rem;margin:0 0 4px;}
+  .edu-item .dates{color:var(--text-muted);font-size:0.85rem;}
 
-      .center-row {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-      }
+  ul.pubs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;}
+  ul.pubs li{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  ul.pubs li:hover{transform:translateY(-2px);border-color:var(--accent);}
+  .pub-title{font-weight:600;font-size:1rem;margin:0 0 6px;color:var(--text);}
+  .pub-meta{font-size:0.85rem;color:var(--text-muted);margin:0 0 10px;}
+  .pub-type{
+    display:inline-block;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--accent-dark);
+    background:rgba(166,206,57,0.15);
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+  .pub-doi{font-size:0.85rem;}
+  .pub-doi a{color:var(--text-muted);text-decoration:none;border-bottom:1px dotted var(--text-muted);}
+  .pub-doi a:hover{color:var(--accent-dark);border-color:var(--accent-dark);}
 
-      .center-col {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+  footer{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+    font-size:0.85rem;
+    color:var(--text-muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  footer a{color:var(--text-muted);}
 
-      .h2 {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        margin: 10px;
-      }
+  @media (max-width:480px){
+    .wrap{padding:40px 18px 72px;}
+    header.hero{flex-direction:column;align-items:flex-start;gap:14px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
 
-      .h3 {
-        text-align: center;
-        font-size: 18px;
-        font-weight: 700;
-        margin: 5px;
-      }
-
-      .h4 {
-        text-align: center;
-        font-size: 16px;
-        margin: 5px;
-      }
-
-      button {
-        border: none !important;
-        padding: 6px 22px;
-        border-radius: 16px;
-      }
-
-      button:hover {
-        background-color: #cddfec !important;
-      }
-
-      .calendar-header {
-        display: flex;
-        height: 40px;
-        width: 300px;
-        justify-content: space-between;
-        justify-items: center;
-        align-items: center;
-        margin: 10px;
-      }
-
-      .display-icon img {
-        height: 100px;
-        width: auto;
-        display: inline-block;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="center-row">
-      <div class="center-col">
-        <p class="h2">Lịch học IELTS của Snoopy và Miffy 🫵</p>
-        <p class="h4">Kéo thả icon để đánh dấu 🔥</p>
-      </div>
+  <header class="hero">
+    <div class="avatar">HC</div>
+    <div>
+      <h1>Hai-Chan Nguyen</h1>
+      <p class="role">Information Technology Researcher · Ho Chi Minh City, Vietnam</p>
+      <a class="orcid-badge" href="https://orcid.org/0009-0007-5732-8671" target="_blank" rel="noopener">
+        <svg viewBox="0 0 256 256" fill="#A6CE39" xmlns="http://www.w3.org/2000/svg"><path d="M256,128c0,70.7-57.3,128-128,128C57.3,256,0,198.7,0,128C0,57.3,57.3,0,128,0C198.7,0,256,57.3,256,128z"/><path fill="#fff" d="M86.3,186.2H70.9V79.1h15.4v48.4V186.2z"/><path fill="#fff" d="M108.9,79.1h41.6c39.6,0,57,28.3,57,53.6c0,27.5-21.5,53.6-56.8,53.6h-41.8V79.1z M124.3,172.4h24.5c34.9,0,42.9-26.5,42.9-39.7c0-21.5-13.7-39.7-43.7-39.7h-23.7V172.4z"/><path fill="#fff" d="M88.7,56.8c0,5.5-4.5,10.1-10.1,10.1c-5.6,0-10.1-4.6-10.1-10.1c0-5.6,4.5-10.1,10.1-10.1C84.2,46.7,88.7,51.3,88.7,56.8z"/></svg>
+        ORCID: 0009-0007-5732-8671
+      </a>
     </div>
+  </header>
 
-    <div class="center-row display-icon">
-      <img
-        src="icon1_1.png"
-        id="icon1"
-        draggable="true"
-        ondragstart="drag(event)"
-      />
-
-      <img
-        src="icon2.png"
-        id="icon2"
-        draggable="true"
-        ondragstart="drag(event)"
-      />
+  <section id="about">
+    <h2>About</h2>
+    <div class="card">
+      <p>Hai-Chan Nguyen is an Information Technology researcher with a background from the
+      University of Science, Vietnam National University Ho Chi Minh City. Their published
+      work spans computer vision and machine learning topics including model explainability,
+      medical data classification, video event retrieval, adversarial privacy, and emotion
+      recognition from imagery.</p>
     </div>
+  </section>
 
-    <div class="center-row">
-      <div class="calendar-header">
-        <button onclick="changeMonth(-1)">◀</button>
-        <p class="h3" id="calendarTitle"></p>
-        <button onclick="changeMonth(1)">▶</button>
-      </div>
+  <section id="education">
+    <h2>Education</h2>
+    <div class="card edu-item">
+      <h3>Bachelor of Information Technology</h3>
+      <p class="org">University of Science, Vietnam National University Ho Chi Minh City · Ho Chi Minh City, Vietnam</p>
+      <p class="dates">September 2021 – October 2025</p>
     </div>
+  </section>
 
-    <table id="calendar">
-      <tr>
-        <th>Sun</th>
-        <th>Mon</th>
-        <th>Tue</th>
-        <th>Wed</th>
-        <th>Thu</th>
-        <th>Fri</th>
-        <th>Sat</th>
-      </tr>
-    </table>
+  <section id="publications">
+    <h2>Publications</h2>
+    <ul class="pubs">
 
-    <script>
-      const GITHUB_USERNAME = "chancholat"; // Thay bằng GitHub username của bạn
-      const REPO_NAME = "chancholat.github.io"; // Thay bằng repo bạn lưu dữ liệu
-      const FILE_PATH = "calendar.json";
-      const SICRIT =
-        "U2FsdGVkX1/ilvRaMgDIEV3l+yYomsd2G0OuzfU+7uwCcTe0kao97cnyI/cVTYdraXZpVmMCus+ZS7yrpQR2MFRg2GDzJICSr6LWD6iIx8vNHxcY2Kxv8JvcAq9QftB2dv003YUPdxhlYOprBZC4yQ=="; // Thay bằng Personal Access decrypted
+      <li>
+        <span class="pub-type">Book Chapter</span>
+        <p class="pub-title">Enhancing Model Explainability and Performance via Attention-Guided Gradient Restriction</p>
+        <p class="pub-meta">2027</p>
+        <p class="pub-doi"><a href="https://doi.org/10.1007/978-3-032-37676-3_6" target="_blank" rel="noopener">doi.org/10.1007/978-3-032-37676-3_6</a></p>
+      </li>
 
-      const bytes = CryptoJS.AES.decrypt(SICRIT, "ielts75");
-      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-      const COMMITTER = { name: "chan", email: "thepdatoipm@gmail.com" };
+      <li>
+        <span class="pub-type">Journal Article</span>
+        <p class="pub-title">Enhancing rare class prediction in medical data via clinical validity augmentation</p>
+        <p class="pub-meta">Engineering Applications of Artificial Intelligence · October 2026</p>
+        <p class="pub-doi"><a href="https://doi.org/10.1016/j.engappai.2026.116041" target="_blank" rel="noopener">doi.org/10.1016/j.engappai.2026.116041</a></p>
+      </li>
 
-      let saveStated = {};
-      let fileSha = null;
-      async function fetchCalendarState() {
-        console.log("Fetching calendar state from GitHub...");
-        try {
-          let response = await fetch(
-            `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`,
-            {
-              headers: {
-                Accept: "application/vnd.github+json",
-                Authorization: `Bearer ${decrypted}`,
-                "X-GitHub-Api-Version": "2022-11-28",
-              },
-            }
-          );
-          if (!response.ok) throw new Error("Failed to fetch calendar state");
-          let data = await response.json();
-          let content = atob(data.content);
-          let state = JSON.parse(content);
-          c = state;
-          console.log("Fetched state:", state);
-          saveStated = state;
-          fileSha = data.sha;
-          generateCalendar(state, data.sha);
-        } catch (error) {
-          console.error("Lỗi khi tải trạng thái lịch:", error);
-          generateCalendar({}, null);
-        }
-      }
+      <li>
+        <span class="pub-type">Book Chapter</span>
+        <p class="pub-title">LameFrames: Optimizing Video Event Retrieval Through Strategic Integration and Individual Strategy Enhancement</p>
+        <p class="pub-meta">Communications in Computer and Information Science · 2025</p>
+        <p class="pub-doi"><a href="https://doi.org/10.1007/978-981-96-4291-5_22" target="_blank" rel="noopener">doi.org/10.1007/978-981-96-4291-5_22</a></p>
+      </li>
 
-      async function saveState(fileSha, currentYear, currentMonth) {
-        let state = saveStated;
-        document.querySelectorAll(".drop-zone").forEach((zone, index) => {
-          // store drop date inside currentmonth inside currentyear
+      <li>
+        <span class="pub-type">Book Chapter</span>
+        <p class="pub-title">Adversarial Perturbations for License Plate Information Privacy</p>
+        <p class="pub-meta">Communications in Computer and Information Science · 2024</p>
+        <p class="pub-doi"><a href="https://doi.org/10.1007/978-981-96-0434-0_7" target="_blank" rel="noopener">doi.org/10.1007/978-981-96-0434-0_7</a></p>
+      </li>
 
-          if (!state[currentYear]) state[currentYear] = {};
-          if (!state[currentYear][currentMonth])
-            state[currentYear][currentMonth] = {};
+      <li>
+        <span class="pub-type">Conference Paper</span>
+        <p class="pub-title">Multi-Branch Network for Imagery Emotion Prediction</p>
+        <p class="pub-meta">December 2023</p>
+        <p class="pub-doi"><a href="https://doi.org/10.1145/3628797.3628954" target="_blank" rel="noopener">doi.org/10.1145/3628797.3628954</a></p>
+      </li>
 
-          state[currentYear][currentMonth][index + 1] = zone.innerHTML;
-        });
-        let encodedContent = btoa(JSON.stringify(state, null, 2));
+      <li>
+        <span class="pub-type">Book Chapter</span>
+        <p class="pub-title">Multi-branch network for imagery emotion prediction</p>
+        <p class="pub-meta">Communications in Computer and Information Science</p>
+      </li>
 
-        console.log("Saving state to GitHub:", state);
-        try {
-          let response = await fetch(
-            `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`,
-            {
-              method: "PUT",
-              headers: {
-                Accept: "application/vnd.github+json",
-                Authorization: `Bearer ${decrypted}`,
-                "X-GitHub-Api-Version": "2022-11-28",
-              },
-              body: JSON.stringify({
-                message: "Cập nhật trạng thái lịch",
-                committer: COMMITTER,
-                content: encodedContent,
-                sha: fileSha,
-              }),
-            }
-          );
-          if (!response.ok) throw new Error("Failed to save state");
-          let data = await response.json();
-          saveStated = state;
-          console.log("Save successful:", data);
-        } catch (err) {
-          console.error("Lỗi khi lưu trạng thái:", err);
-        }
-      }
+    </ul>
+  </section>
 
-      //   function generateCalendar(savedState, fileSha) {
-      //     let table = document.getElementById("calendar");
-      //     let today = new Date();
-      //     let year = today.getFullYear();
-      //     let month = today.getMonth();
-      //     let firstDay = new Date(year, month, 1).getDay();
-      //     let daysInMonth = new Date(year, month + 1, 0).getDate();
+  <footer>
+    <span>&copy; 2026 Hai-Chan Nguyen</span>
+    <a href="https://orcid.org/0009-0007-5732-8671" target="_blank" rel="noopener">View full ORCID record →</a>
+  </footer>
 
-      //     let row = document.createElement("tr");
-      //     for (let i = 0; i < firstDay; i++) {
-      //       row.appendChild(document.createElement("td"));
-      //     }
-
-      //     for (let day = 1; day <= daysInMonth; day++) {
-      //       let cell = document.createElement("td");
-      //       cell.innerHTML = day;
-      //       let dropZone = document.createElement("div");
-      //       dropZone.classList.add("drop-zone");
-      //       dropZone.setAttribute("ondragover", "allowDrop(event)");
-      //       dropZone.setAttribute(
-      //         "ondrop",
-      //         "drop(event, " + day + ', "' + fileSha + '")'
-      //       );
-
-      //       if (savedState[day]) {
-      //         dropZone.innerHTML = savedState[day];
-      //       }
-
-      //       cell.appendChild(dropZone);
-      //       row.appendChild(cell);
-
-      //       if ((firstDay + day) % 7 === 0) {
-      //         table.appendChild(row);
-      //         row = document.createElement("tr");
-      //       }
-      //     }
-
-      //     table.appendChild(row);
-      //   }
-
-      let currentYear = new Date().getFullYear();
-      let currentMonth = new Date().getMonth();
-      let today = new Date().getDate();
-      console.log(currentYear, currentMonth, today);
-
-      function generateCalendar(
-        savedState,
-        fileSha,
-        year = currentYear,
-        month = currentMonth
-      ) {
-        console.log(saveStated);
-        let table = document.getElementById("calendar");
-        table.innerHTML = `
-                <tr>
-                    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
-                </tr>
-            `;
-
-        document.getElementById("calendarTitle").innerText = `${year} - ${
-          month + 1
-        }`;
-
-        let firstDay = new Date(year, month, 1).getDay();
-        let daysInMonth = new Date(year, month + 1, 0).getDate();
-        let row = document.createElement("tr");
-
-        for (let i = 0; i < firstDay; i++) {
-          row.appendChild(document.createElement("td"));
-        }
-
-        for (let day = 1; day <= daysInMonth; day++) {
-          let cell = document.createElement("td");
-          cell.innerHTML = day;
-          // cell.addEventListener("dragenter", () => {
-          //   cell.classList.add("bg-hover");
-          // });
-          // cell.addEventListener("dragleave", () => {
-          //   cell.classList.remove("bg-hover");
-          // });
-          let dropZone = document.createElement("div");
-          dropZone.classList.add("drop-zone");
-          dropZone.classList.add("flex");
-          dropZone.setAttribute("ondragover", "allowDrop(event)");
-          dropZone.setAttribute("ondrop", `drop(event, ${day}, '${fileSha}')`);
-          dropZone.addEventListener("dragenter", () => {
-            dropZone.parentElement.classList.add("bg-hover");
-          });
-
-          if (savedState[currentYear]?.[currentMonth]?.[day]) {
-            dropZone.innerHTML = savedState[currentYear]?.[currentMonth]?.[day];
-            dropZone.children[0].addEventListener("dragenter", () => {
-              console.log("drag enter");
-              dropZone.parentElement.classList.add("bg-hover");
-            });
-            dropZone.children[0].addEventListener("dragleave", () => {
-              dropZone.parentElement.classList.remove("bg-hover");
-            });
-          } else {
-            dropZone.addEventListener("dragleave", () => {
-              dropZone.parentElement.classList.remove("bg-hover");
-            });
-          }
-
-          // dropZone.innerHTML = "<img src=\"icon1.png\"id=\"icon1\"> <img src=\"icon1.png\"id=\"icon1\">";
-
-          if (
-            year === new Date().getFullYear() &&
-            month === new Date().getMonth() &&
-            day === today
-          ) {
-            cell.classList.add("highlight");
-          }
-
-          cell.appendChild(dropZone);
-          row.appendChild(cell);
-
-          if ((firstDay + day) % 7 === 0) {
-            table.appendChild(row);
-            row = document.createElement("tr");
-          }
-        }
-
-        table.appendChild(row);
-      }
-
-      function changeMonth(offset) {
-        currentMonth += offset;
-        if (currentMonth < 0) {
-          currentMonth = 11;
-          currentYear--;
-        } else if (currentMonth > 11) {
-          currentMonth = 0;
-          currentYear++;
-        }
-        generateCalendar(saveStated, fileSha, currentYear, currentMonth);
-      }
-
-      function allowDrop(event) {
-        event.preventDefault();
-      }
-
-      function drag(event) {
-        event.dataTransfer.setData("id", event.target.id);
-      }
-
-      function drop(event, day, fileSha) {
-        event.preventDefault();
-        let iconId = event.dataTransfer.getData("id");
-        let icon = document.getElementById(iconId).cloneNode(true);
-        icon.removeAttribute("id");
-        icon.draggable = false;
-
-        // check if any icon already exists
-        // check if class of envent target tag is img
-
-        if (!event.target.classList.contains("drop-zone")) {
-          console.log("Event target is not drop-zone");
-          event.target = event.target.parentElement;
-        }
-        // check if there are two icons already
-        if (event.target.children.length > 1) {
-          console.log("There are already two icons");
-          return;
-        }
-        event.target.appendChild(icon);
-        event.target.parentElement.classList.remove("bg-hover");
-        console.log(`Dropped ${iconId} into day ${day}`);
-        saveState(fileSha, currentYear, currentMonth);
-      }
-
-      window.onload = fetchCalendarState;
-    </script>
-  </body>
+</div>
+</body>
 </html>
